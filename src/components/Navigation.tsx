@@ -1,7 +1,20 @@
 import React, { useState } from 'react';
 import {
-  Menu, Database, FolderOpen, Camera, Users, Calendar, HelpCircle,
-  ChevronDown, FileText, MapPin, AlertCircle, Target, TrendingUp
+  Menu,
+  Database,
+  FolderOpen,
+  Camera,
+  Users,
+  Calendar,
+  HelpCircle,
+  ChevronDown,
+  FileText,
+  MapPin,
+  AlertCircle,
+  Target,
+  TrendingUp,
+  ShoppingBag,
+  Shield,
 } from 'lucide-react';
 
 interface NavigationProps {
@@ -13,11 +26,14 @@ const iconSize = 18;
 const indentBase = 16;
 const indentStep = 12;
 
-const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) => {
-  // 👇 Sidebar closed by default
+const Navigation: React.FC<NavigationProps> = ({
+  currentPage,
+  onPageChange,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [openL1, setOpenL1] = useState<string | null>(null);
   const [openL2, setOpenL2] = useState<string | null>(null);
+  const [openL3, setOpenL3] = useState<string | null>(null); // For humanitarian sub-items
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
@@ -50,7 +66,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) =>
                     transform transition-transform duration-200
                     ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
-        {/* Header – no close icon */}
+        {/* Header */}
         <div className="p-6 border-b border-gray-100 flex items-center">
           <Database className="text-emerald-600 mr-3" size={24} />
           <h1 className="text-xl font-bold text-gray-800">Data Bank</h1>
@@ -62,9 +78,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) =>
           <button
             onClick={() => navigate('home')}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium
-                        ${currentPage === 'home'
-                          ? 'bg-emerald-500 text-white'
-                          : 'text-gray-700 hover:bg-gray-100'}`}
+                        ${
+                          currentPage === 'home'
+                            ? 'bg-emerald-500 text-white'
+                            : 'text-gray-700 hover:bg-gray-100'
+                        }`}
           >
             <Database size={iconSize} />
             <span>Homepage</span>
@@ -77,9 +95,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) =>
                 setOpenL1(openL1 === 'monitoring' ? null : 'monitoring')
               }
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium
-                          ${openL1 === 'monitoring'
-                            ? 'bg-blue-50 text-blue-800'
-                            : 'text-gray-700 hover:bg-gray-100'}`}
+                          ${
+                            openL1 === 'monitoring'
+                              ? 'bg-blue-50 text-blue-800'
+                              : 'text-gray-700 hover:bg-gray-100'
+                          }`}
             >
               <FolderOpen size={iconSize} className="text-blue-600" />
               <span>Projects (Monitoring)</span>
@@ -94,19 +114,37 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) =>
             {openL1 === 'monitoring' && (
               <div className="space-y-1">
                 {[
-                  { key: 'all-projects', label: 'All Projects', icon: FolderOpen },
-                  { key: 'filter-projects', label: 'Filter Projects', icon: FolderOpen },
-                  { key: 'monitoring-analysis', label: 'Monitoring Analysis', icon: Target },
-                  { key: 'monitoring-report', label: 'Monitoring Report', icon: FileText },
+                  {
+                    key: 'all-projects',
+                    label: 'All Projects',
+                    icon: FolderOpen,
+                  },
+                  {
+                    key: 'filter-projects',
+                    label: 'Filter Projects',
+                    icon: FolderOpen,
+                  },
+                  {
+                    key: 'monitoring-analysis',
+                    label: 'Monitoring Analysis',
+                    icon: Target,
+                  },
+                  {
+                    key: 'monitoring-report',
+                    label: 'Monitoring Report',
+                    icon: FileText,
+                  },
                 ].map(({ key, label, icon: Icon }) => (
                   <button
                     key={key}
                     onClick={() => navigate(key)}
                     style={{ paddingLeft: `${indentBase + indentStep}px` }}
                     className={`w-full flex items-center gap-3 py-2.5 rounded text-sm
-                                ${currentPage === key
-                                  ? 'bg-emerald-500 text-white'
-                                  : 'text-gray-600 hover:bg-gray-100'}`}
+                                ${
+                                  currentPage === key
+                                    ? 'bg-emerald-500 text-white'
+                                    : 'text-gray-600 hover:bg-gray-100'
+                                }`}
                   >
                     <Icon size={16} />
                     <span>{label}</span>
@@ -123,9 +161,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) =>
                 setOpenL1(openL1 === 'evaluation' ? null : 'evaluation')
               }
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium
-                          ${openL1 === 'evaluation'
-                            ? 'bg-purple-50 text-purple-800'
-                            : 'text-gray-700 hover:bg-gray-100'}`}
+                          ${
+                            openL1 === 'evaluation'
+                              ? 'bg-purple-50 text-purple-800'
+                              : 'text-gray-700 hover:bg-gray-100'
+                          }`}
             >
               <FileText size={iconSize} className="text-purple-600" />
               <span>Projects (Evaluation)</span>
@@ -143,7 +183,9 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) =>
                 <div>
                   <button
                     onClick={() =>
-                      setOpenL2(openL2 === 'data-collection' ? null : 'data-collection')
+                      setOpenL2(
+                        openL2 === 'data-collection' ? null : 'data-collection'
+                      )
                     }
                     style={{ paddingLeft: `${indentBase + indentStep}px` }}
                     className="w-full flex items-center gap-3 py-2.5 rounded text-sm text-gray-700 hover:bg-purple-25"
@@ -161,20 +203,134 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) =>
                   {openL2 === 'data-collection' && (
                     <div className="space-y-1">
                       {[
-                        { key: 'operations-directorate', label: 'Operations Directorate', icon: FolderOpen },
-                        { key: 'humanitarian-directorate', label: 'Humanitarian Directorate', icon: FolderOpen },
-                        { key: 'challenges-recommendations', label: 'Challenges & Recommendations', icon: AlertCircle },
-                        { key: 'evaluation-analysis', label: 'Evaluation Analysis', icon: TrendingUp },
-                        { key: 'evaluation-report', label: 'Evaluation Report', icon: FileText },
+                        {
+                          key: 'operations-directorate',
+                          label: 'Operations Directorate',
+                          icon: FolderOpen,
+                        },
+                        // Humanitarian Directorate with nested items
+                        {
+                          key: 'humanitarian-directorate',
+                          label: 'Humanitarian Directorate',
+                          icon: FolderOpen,
+                        },
+                      ].map(({ key, label, icon: Icon }) => (
+                        <React.Fragment key={key}>
+                          {key === 'humanitarian-directorate' ? (
+                            <div>
+                              <button
+                                onClick={() =>
+                                  setOpenL3(
+                                    openL3 === 'humanitarian'
+                                      ? null
+                                      : 'humanitarian'
+                                  )
+                                }
+                                style={{
+                                  paddingLeft: `${
+                                    indentBase + 2 * indentStep
+                                  }px`,
+                                }}
+                                className="w-full flex items-center gap-3 py-2.5 rounded text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                <Icon size={16} />
+                                <span>{label}</span>
+                                <ChevronDown
+                                  size={14}
+                                  className={`ml-auto transition-transform ${
+                                    openL3 === 'humanitarian'
+                                      ? 'rotate-180'
+                                      : ''
+                                  }`}
+                                />
+                              </button>
+
+                              {openL3 === 'humanitarian' && (
+                                <div className="space-y-1">
+                                  {[
+                                    {
+                                      key: 'food-non-food-items',
+                                      label: 'Food/Non-food Items',
+                                      icon: ShoppingBag,
+                                    },
+                                    {
+                                      key: 'other-humanitarian-interventions',
+                                      label: 'Other Humanitarian Interventions',
+                                      icon: Shield,
+                                    },
+                                  ].map(({ key, label, icon: SubIcon }) => (
+                                    <button
+                                      key={key}
+                                      onClick={() => navigate(key)}
+                                      style={{
+                                        paddingLeft: `${
+                                          indentBase + 3 * indentStep
+                                        }px`,
+                                      }}
+                                      className={`w-full flex items-center gap-3 py-2.5 rounded text-sm
+                                                  ${
+                                                    currentPage === key
+                                                      ? 'bg-emerald-500 text-white'
+                                                      : 'text-gray-600 hover:bg-gray-100'
+                                                  }`}
+                                    >
+                                      <SubIcon size={16} />
+                                      <span>{label}</span>
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => navigate(key)}
+                              style={{
+                                paddingLeft: `${indentBase + 2 * indentStep}px`,
+                              }}
+                              className={`w-full flex items-center gap-3 py-2.5 rounded text-sm
+                                          ${
+                                            currentPage === key
+                                              ? 'bg-emerald-500 text-white'
+                                              : 'text-gray-600 hover:bg-gray-100'
+                                          }`}
+                            >
+                              <Icon size={16} />
+                              <span>{label}</span>
+                            </button>
+                          )}
+                        </React.Fragment>
+                      ))}
+
+                      {/* Remaining items */}
+                      {[
+                        {
+                          key: 'challenges-recommendations',
+                          label: 'Challenges & Recommendations',
+                          icon: AlertCircle,
+                        },
+                        {
+                          key: 'evaluation-analysis',
+                          label: 'Evaluation Analysis',
+                          icon: TrendingUp,
+                        },
+                        {
+                          key: 'evaluation-report',
+                          label: 'Evaluation Report',
+                          icon: FileText,
+                        },
                       ].map(({ key, label, icon: Icon }) => (
                         <button
                           key={key}
                           onClick={() => navigate(key)}
-                          style={{ paddingLeft: `${indentBase + 2 * indentStep}px` }}
+                          style={{
+                            paddingLeft: `${indentBase + 2 * indentStep}px`,
+                          }}
                           className={`w-full flex items-center gap-3 py-2.5 rounded text-sm
-                                      ${currentPage === key
-                                        ? 'bg-emerald-500 text-white'
-                                        : 'text-gray-600 hover:bg-gray-100'}`}
+                                      ${
+                                        currentPage === key
+                                          ? 'bg-emerald-500 text-white'
+                                          : 'text-gray-600 hover:bg-gray-100'
+                                      }`}
                         >
                           <Icon size={16} />
                           <span>{label}</span>
@@ -184,23 +340,35 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) =>
                   )}
                 </div>
 
-                {[
-                  { key: 'risk-management', label: 'Risk Management', icon: AlertCircle },
-                  { key: 'geographic-mapping', label: 'Geographic Mapping', icon: MapPin },
-                ].map(({ key, label, icon: Icon }) => (
-                  <button
-                    key={key}
-                    onClick={() => navigate(key)}
-                    style={{ paddingLeft: `${indentBase + indentStep}px` }}
-                    className={`w-full flex items-center gap-3 py-2.5 rounded text-sm
-                                ${currentPage === key
+                {/* Risk Management */}
+                <button
+                  onClick={() => navigate('risk-management')}
+                  style={{ paddingLeft: `${indentBase + indentStep}px` }}
+                  className={`w-full flex items-center gap-3 py-2.5 rounded text-sm
+                              ${
+                                currentPage === 'risk-management'
                                   ? 'bg-emerald-500 text-white'
-                                  : 'text-gray-600 hover:bg-gray-100'}`}
-                  >
-                    <Icon size={16} />
-                    <span>{label}</span>
-                  </button>
-                ))}
+                                  : 'text-gray-600 hover:bg-gray-100'
+                              }`}
+                >
+                  <AlertCircle size={16} />
+                  <span>Risk Management</span>
+                </button>
+
+                {/* Geographic Mapping */}
+                <button
+                  onClick={() => navigate('geographic-mapping')}
+                  style={{ paddingLeft: `${indentBase + indentStep}px` }}
+                  className={`w-full flex items-center gap-3 py-2.5 rounded text-sm
+                              ${
+                                currentPage === 'geographic-mapping'
+                                  ? 'bg-emerald-500 text-white'
+                                  : 'text-gray-600 hover:bg-gray-100'
+                              }`}
+                >
+                  <MapPin size={16} />
+                  <span>Geographic Mapping</span>
+                </button>
               </div>
             )}
           </div>
@@ -216,9 +384,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) =>
               key={key}
               onClick={() => navigate(key)}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium
-                          ${currentPage === key
-                            ? 'bg-pink-500 text-white'
-                            : 'text-gray-700 hover:bg-gray-100'}`}
+                          ${
+                            currentPage === key
+                              ? 'bg-pink-500 text-white'
+                              : 'text-gray-700 hover:bg-gray-100'
+                          }`}
             >
               <Icon size={iconSize} />
               <span>{label}</span>
